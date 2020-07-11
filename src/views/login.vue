@@ -1,8 +1,4 @@
 <template>
-<div class="scanlines"></div>
-<div class="scanline"></div>
-<div class="flicker"></div>
-<div class="body">
     <div>
         <h1><span class="w">Log in for your initiation<span class="lg"></span></span></h1>
         <input type="text" name="username" v-model="input.username" placeholder="Username" />
