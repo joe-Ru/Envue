@@ -1,9 +1,11 @@
 <template>
     <div id="secure">
-        <h1>Secure Area</h1>
+    <span class="w"><h1>Welcome</h1>
         <p>
-            This is a secure area
-        </p>
+            Welcome to the fold Brother, we shall be in contact.
+        </p><span class="lg"></span></span>
+        
+        <img alt="circada" src="../assets/index.png" />
     </div>
 </template>
 
@@ -17,10 +19,5 @@
 </script>
 
 <style scoped>
-    #secure {
-        background-color: #FFFFFF;
-        border: 1px solid #CCCCCC;
-        padding: 20px;
-        margin-top: 10px;
-    }
+@import '../style.css';
 </style>

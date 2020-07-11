@@ -33,23 +33,31 @@ export default {
 
 <template>
   <div id="app">
-  <HelloWorld msg="Testing" />
+  <HelloWorld />
+
+  <div class="scanlines"></div>
+<div class="scanline"></div>
+<div class="flicker"></div>
+<div class="body"></div>
     <div id="nav">
-      <router-link
+    <pre>
+ <h2> <span class="w">WE ARE TEAM ENVUE, WE WILL DOMINATE, WE WILL DESTROY<span class="lg"></span></span> </h2>
+</pre>
+<span class="w"><router-link
         v-if="authenticated"
         to="/login"
         v-on:click.native="logout()"
         replace
-        >Logout</router-link
-      >
+        >Logout</router-link><span class="lg"></span></span>
+      
     </div>
     <router-view @authenticated="setAuthenticated" />
-    <img alt="Vue logo" src="./assets/logo.png" />
   </div>
 </template>
 
 
 <style>
+@import '../src/style.css';
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

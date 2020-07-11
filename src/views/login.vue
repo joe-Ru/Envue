@@ -1,6 +1,10 @@
 <template>
-    <div id="login">
-        <h1>Login</h1>
+<div class="scanlines"></div>
+<div class="scanline"></div>
+<div class="flicker"></div>
+<div class="body">
+    <div>
+        <h1><span class="w">Log in for your initiation<span class="lg"></span></span></h1>
         <input type="text" name="username" v-model="input.username" placeholder="Username" />
         <input type="password" name="password" v-model="input.password" placeholder="Password" />
         <button type="button" v-on:click="login()">Login</button>
@@ -36,12 +40,15 @@
 </script>
 
 <style scoped>
+@import '../style.css';
+/*
     #login {
         width: 500px;
         border: 1px solid #CCCCCC;
         background-color: #FFFFFF;
         margin: auto;
-        margin-top: 200px;
+        margin-top: 100px;
         padding: 20px;
     }
+    */
 </style>
