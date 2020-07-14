@@ -41,7 +41,7 @@ export default {
 <div class="body"></div>
     <div id="nav">
     <pre>
- <h2> <span class="w">WE ARE TEAM ENVUE, WE WILL DOMINATE, WE WILL DESTROY<span class="lg"></span></span> </h2>
+ <h2> <span class="w">Hi there<span class="lg"></span></span> </h2>
 </pre>
 <span class="w"><router-link
         v-if="authenticated"
