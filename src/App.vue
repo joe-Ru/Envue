@@ -1,65 +1,47 @@
-<script>
-import HelloWorld from "./components/HelloWorld.vue";
-
-export default {
-  name: "App",
-  components: {
-    HelloWorld,
-  },
-  data() {
-            return {
-                authenticated: false,
-                mockAccount: {
-                    username: "test",
-                    password: "test"
-                }
-            }
-        },
-        mounted() {
-            if(!this.authenticated) {
-                this.$router.replace({ name: "login" });
-            }
-        },
-        methods: {
-            setAuthenticated(status) {
-                this.authenticated = status;
-            },
-            logout() {
-                this.authenticated = false;
-            }
-        }
-};
-</script>
-
 <template>
   <div id="app">
-  <HelloWorld />
-
-  <div class="scanlines"></div>
-<div class="scanline"></div>
-<div class="flicker"></div>
-<div class="body"></div>
-    <div id="nav">
-    <pre>
- <h2> <span class="w">Hi there<span class="lg"></span></span> </h2>
-</pre>
-<span class="w"><router-link
-        v-if="authenticated"
-        to="/login"
-        v-on:click.native="logout()"
-        replace
-        >Logout</router-link><span class="lg"></span></span>
-      
-    </div>
+    <img src="./assets/logo.png">
     <router-view @authenticated="setAuthenticated" />
+    <div id="nav">
+      <router-link v-if="authenticated" to="/login" v-on:click.native="logout()" replace>Logout</router-link>
+    </div>
   </div>
 </template>
 
+<script>
+  export default {
+      name: 'App',
+      data() {
+        return {
+          authenticated: false,
+          mockAccount: {
+            username: "somename",
+            password: "password"
+          }
+        }
+      },
+      mounted() {
+        if(!this.authenticated) {
+          this.$router.replace({ name: "Login" });
+        }
+      },
+      methods: {
+        setAuthenticated(status) {
+          this.authenticated = status;
+        },
+        logout() {
+          this.authenticated = false;
+        }
+      },
+      components: {
+        // Navigation: Navigation
+      },
+  }
+</script>
 
 <style>
-@import '../src/style.css';
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
