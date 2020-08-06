@@ -73,17 +73,20 @@ import { Promise } from 'q';
           this.$router.replace({ name: "Edit" });
       }
     },
+    
+    //TODO: Change the function, it checks for literally any letter on the name. Example: Because 'n' is in LeBron, it displays that as well.
     computed: {
         filteredList1() {
             return this.volunteers.filter(volunteer => {
                 return volunteer.FirstName.toLowerCase().includes(this.search.toLowerCase())
             });
         },
-        /*filteredList2() {
+        filteredList2() {
             return this.volunteers.filter(volunteer => {
                 return volunteer.Availibility.toLowerCase().includes(this.search2.toLowerCase())
             });
         },
+        /*
         filteredList3() {
             return this.volunteers.filter(volunteer => {
                 return volunteer.Phone.includes(this.search3)
