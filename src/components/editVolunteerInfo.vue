@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div v-on: edit-volunteer-info="editVolunteer">
         <form @submit="editVolunteerInfo">
-            <input type="text" v-model="FirstName" name="firstName" placeholder="First Name" required>
+            <input type="text" v-model="FirstName" name="firstName" placeholder="firstname" required>
             <input type="text" v-model="LastName" name="lastName" placeholder="Last Name" required>
             <input type="text" v-model="Username" name="userName" placeholder="Username" required>
             <input type="text" v-model="Password" name="password" placeholder="Password" required>
@@ -21,6 +21,7 @@
             <input type="text" v-model="SocialSecurity" name="socialSecurity" placeholder="Social Security on File" required>
             <input type="text" v-model="ApprovalStatus" name="approvalStatus" placeholder="Approval Status" required>
             <input type="submit" value="Add Volunteer" class="btn">
+            <input type="close-modal" value="Revert to original" class="btn">
         </form>
     </div>
 </template>
@@ -49,51 +50,60 @@ export default {
             ECAddress:'',
             DriversLicense:'',
             SocialSecurity:'',
-            ApprovalStatus:'',            
+            ApprovalStatus:'',       
         }
     },
+    props: {
+            FirstName:String,
+            LastName:String,
+            Username:String,
+            Password:String,
+            PreferredLocation:String,
+            Skills:String,
+            Availibility:String,
+            Address:String,
+            Phone:String,
+            Email:String,
+            Education:String,
+            Licenses:String,
+            ECName:String,
+            ECPhone:String,
+            ECEmail:String,
+            ECAddress:String,
+            DriversLicense:String,
+            SocialSecurity:String,
+            ApprovalStatus:String,  
+    },
     methods:{
-        editVolunteerInfo(e){
+        editVolunteer(e, firstname, lastname, username, password, preferredlocation, skills, availibility, address, phone, email, education, licenses, ecname, ecphone, ecemail, ecaddress, driverslicense, socialsecurity, approvalstatus){
             e.preventDefault();
-            const firstname = this.FirstName;
-            const lastname = this.LastName;
-            const username = this.Username;
-            const password = this.Password;
-            const preferredlocation = this.PreferredLocation;
-            const skills = this.Skills;
-            const availibility = this.Availibility;
-            const address = this.Address;
-            const phone = this.Phone;
-            const email = this.Email;
-            const education = this.Education;
-            const licenses = this.Licenses;
-            const ecname = this.ECName;
-            const ecphone = this.ECPhone;
-            const ecemail = this.ECEmail;
-            const ecaddress = this.ECAddress;
-            const driverslicense = this.DriversLicense;
-            const socialsecurity = this.SocialSecurity;
-            const approvalstatus = this.ApprovalStatus;
-            this.FirstName='';
-            this.LastName='';
-            this.Username='';
-            this.Password='';
-            this.PreferredLocation='';
-            this.Availibility='';
-            this.Address='';
-            this.Phone='';
-            this.Email='';
-            this.Education='';
-            this.Licenses='';
-            this.ECName='';
-            this.ECPhone='';
-            this.ECEmail='';
-            this.ECAddress='';
-            this.DriversLicense='';
-            this.SocialSecurity='';
-            this.ApprovalStatus='';
+            console.log(e.FirstName+" is the name");
+            console.log(firstname+" first name");
+            console.log(e.firstname+" first name");
+            console.log(firstname1+" first name");
+            console.log(e.firstname1+" first name");
+            const firstname1 = this.firstname;
+            const lastname1 = this.LastName;
+            const username1 = this.Username;
+            const password1 = this.Password;
+            const preferredlocation1 = this.PreferredLocation;
+            const skills1 = this.Skills;
+            const availibility1 = this.Availibility;
+            const address1 = this.Address;
+            const phone1 = this.Phone;
+            const email1 = this.Email;
+            const education1 = this.Education;
+            const licenses1 = this.Licenses;
+            const ecname1 = this.ECName;
+            const ecphone1 = this.ECPhone;
+            const ecemail1 = this.ECEmail;
+            const ecaddress1 = this.ECAddress;
+            const driverslicense1 = this.DriversLicense;
+            const socialsecurity1 = this.SocialSecurity;
+            const approvalstatus1 = this.ApprovalStatus;
+            
             //working to this point
-            //this.$emit('edit-volunteer-info', firstname, lastname, username, password, preferredlocation, skills, availibility, address, phone, email, education, licenses, ecname, ecphone, ecemail, ecaddress, driverslicense, socialsecurity, approvalstatus);
+            this.$emit('edit-volunteer-info', firstname1, lastname1, username1, password1, preferredlocation1, skills1, availibility1, address1, phone1, email1, education1, licenses1, ecname1, ecphone1, ecemail1, ecaddress1, driverslicense1, socialsecurity1, approvalstatus1);
         }
     }
 }

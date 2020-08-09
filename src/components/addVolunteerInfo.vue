@@ -21,6 +21,7 @@
             <input type="text" v-model="SocialSecurity" name="socialSecurity" placeholder="Social Security on File" required>
             <input type="text" v-model="ApprovalStatus" name="approvalStatus" placeholder="Approval Status" required>
             <input type="submit" value="Add Volunteer" class="btn">
+            <input type="reset" value="Clear info" class="btn">
         </form>
     </div>
 </template>
@@ -92,7 +93,6 @@ export default {
             this.DriversLicense='';
             this.SocialSecurity='';
             this.ApprovalStatus='';
-            //working to this point
             this.$emit('add-volunteer-info', firstname, lastname, username, password, preferredlocation, skills, availibility, address, phone, email, education, licenses, ecname, ecphone, ecemail, ecaddress, driverslicense, socialsecurity, approvalstatus);
         }
     }

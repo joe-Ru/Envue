@@ -1,9 +1,11 @@
 <template>
     <div>
         <h3>Volunteers</h3>
+        <TestComponent />
         <AddVolunteerInfo v-on:add-volunteer-info="addVolunteerInfo" />
         <br>
         <input type="text" v-model="search" placeholder="Search First Name.."/>
+        <editVolunteerInfo /> <!-- -->
         <ul>
             <li class="l1" v-for="item in filteredList1">
                 {{ item.FirstName }}, {{ item.Availibility }}, {{item.Phone}}, {{item.Email}}
@@ -11,12 +13,20 @@
                 <button v-on:click="editVolunteer(item)">Edit contact</button>    
             </li>  
         </ul>
+        
         <router-link to='/home'>Homepage</router-link>
     </div>
 </template>
 <script>
 import AddVolunteerInfo from './AddVolunteerInfo';
-import { Promise } from 'q';
+import EditVolunteerInfo from './editVolunteerInfo';
+/*var app = new Vue({
+    el:'#editVolunteer',
+    data: {
+        editinfo: '<p>edit was clicked</p>'
+    }
+})*/
+//import { Promise } from 'q';
   class Volunteer {
     constructor(FirstName, LastName, Username, Password, PreferredLocation, Skills, Availibility, Address, Phone, Email, Education, Licenses, ECName, ECPhone, ECEmail, ECAddress, DriversLicense, SocialSecurity, ApprovalStatus) {
         this.FirstName = FirstName;
@@ -44,6 +54,10 @@ import { Promise } from 'q';
     name: "Home",
     components: {
       AddVolunteerInfo,
+      EditVolunteerInfo,
+      'TestComponent' : {
+          template :"<div>Child Component, written inside the parent component</br>"
+      } //Cool stuff, child components can be written inside parent components 
     },
     data() {
       return {
@@ -68,25 +82,20 @@ import { Promise } from 'q';
           }
       },
       editVolunteer(volunteer){
-          console.log(volunteer.FirstName);
-          $emit('edit-volunteer-info')
-          this.$router.replace({ name: "Edit" });
-      }
+
+      },
     },
-    
-    //TODO: Change the function, it checks for literally any letter on the name. Example: Because 'n' is in LeBron, it displays that as well.
     computed: {
         filteredList1() {
             return this.volunteers.filter(volunteer => {
                 return volunteer.FirstName.toLowerCase().includes(this.search.toLowerCase())
             });
         },
-        filteredList2() {
+        /*filteredList2() {
             return this.volunteers.filter(volunteer => {
                 return volunteer.Availibility.toLowerCase().includes(this.search2.toLowerCase())
             });
         },
-        /*
         filteredList3() {
             return this.volunteers.filter(volunteer => {
                 return volunteer.Phone.includes(this.search3)
@@ -104,7 +113,13 @@ import { Promise } from 'q';
 <style scoped>
 
 
-/*<li class="l2" v-for="item in filteredList2">{{ item.availibility }}</li>
+/*spare code parts 
+<li class="l2" v-for="item in filteredList2">{{ item.availibility }}</li>
 <li class="l3" v-for="item in filteredList3">{{ item.phone }}</li>
 <li class="l4" v-for="item in filteredList4">{{ item.email }}</li>
-*/</style>
+
+<div id="editVolunteer">
+            <p v-html="editinfo"></p>
+        </div>
+        */
+</style>
