@@ -1,83 +1,37 @@
 <template>
-  <div>
-    <h3>Administrator Page</h3>
-    <input type="radio" id="volunteers" name="selection" value="Volunteers" v-model="selected">
-    <label for="volunteers">Volunteers</label>
-    <input type="radio" id="opportunities" name="selection" value="Opportunities" v-model="selected">
-    <label for="opportunities">Opportunities</label>
-    <br>
-    <AddOpportunity v-on:add-opportunity="addOpportunity" />
-    <AddVolunteer v-on:add-volunteer="addVolunteer" />
-    <input type="text" v-model="search" placeholder="Search title.."/>
-    <br>
-    <router-link to='/volunteers'>Volunteer info</router-link>
-    <router-link to='/opportunities'>Opportunities info</router-link>
-    <ul>
-      <li v-for="item in filteredList">{{ item.name }}</li>
-    </ul>
-  </div>
+    <v-main>
+        <v-row>
+            <v-col cols="12"><h1>Administrative Page</h1></v-col>
+        </v-row>
+        <v-row class="ma-0 pa-0">
+            <v-col cols="3"></v-col>
+            <v-col cols="6">
+                <v-radio-group v-model="selected" row>
+                    <v-radio label="Manage Volunteers" name="selection" value="Volunteers"></v-radio>
+                    <v-radio label="Manage Opportunities" name="selection" value="Opportunities"></v-radio>
+                </v-radio-group>
+            </v-col>
+        </v-row>
+        <VolunteersPage v-if="selected==='Volunteers'"/>
+        <OpportunitiesPage v-if="selected==='Opportunities'"/>
+    </v-main>
 </template>
+
+
 <script>
-import AddOpportunity from './AddOpportunity';
-import AddVolunteer from './AddVolunteer';
-
-  class Volunteer {
-    constructor(name) {
-      this.name = name;
-    }
-  }
-  class Opportunity {
-    constructor(name) {
-      this.name = name;
-    }
-  }
-  export default {
-    name: "Home",
-    components: {
-      AddOpportunity,
-      AddVolunteer
-    },
-    data() {
-      return {
-        search: '',
-        selected: '',
-        volunteers: [
-          new Volunteer('Jeff'),
-          new Volunteer('Brian')
-        ],
-        opportunities: [
-          new Opportunity('This One'),
-          new Opportunity( 'That One'),
-          new Opportunity( 'The Other')
-        ]
-      }
-    },
-    methods:{
-      addOpportunity(newOpportunity){
-        newOpportunity = new Opportunity(newOpportunity);
-        this.opportunities = [...this.opportunities, newOpportunity];
-      },
-      addVolunteer(newVolunteer){
-        newVolunteer = new Volunteer(newVolunteer);
-        this.volunteers = [...this.volunteers, newVolunteer];
-      }
-    },
-    computed: {
-      filteredList() {
-        if(this.selected === 'Volunteers'){
-          return this.volunteers.filter(volunteer => {
-            return volunteer.name.toLowerCase().includes(this.search.toLowerCase())
-          });
-        }else{
-          return this.opportunities.filter(volunteer => {
-            return volunteer.name.toLowerCase().includes(this.search.toLowerCase())
-          })
+    import VolunteersPage from '@/components/Volunteers'
+    import Opportunities from "@/components/Opportunities";
+    export default {
+        name: "Home",
+        components:{
+            OpportunitiesPage: Opportunities,
+            VolunteersPage: VolunteersPage
+        },
+        data() {
+            return {
+                selected: 'Opportunities'
+            }
         }
-      }
+
     }
-  }
 </script>
-<style scoped>
-
-</style>
-

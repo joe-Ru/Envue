@@ -1,46 +1,44 @@
 <template>
-    <div>
-        <form @submit="addOpportunity">
-            <input type="text" v-model="title" name="title" placeholder="Add Opportunity"> 
-            <input type="submit" value="Add" class="btn">
-        </form>
-    </div>
+    <v-dialog v-model="add_dialog" persistent max-width="600px">
+        <template v-slot:activator="{ on, attrs }">
+            <v-btn
+                    color="primary"
+                    dark
+                    class="mb-2"
+                    v-bind="attrs"
+                    v-on="on"
+            >New Opportunity</v-btn>
+        </template>
+        <v-card>
+            <v-card-title>
+                <span class="headline">Add Opportunity</span>
+            </v-card-title>
+            <v-card-text>
+                <v-form>
+                    <v-text-field cols="2" name="add-opp-name" placeholder="Center Name"></v-text-field>
+                    <v-date-picker name="center-date"></v-date-picker>
+                </v-form>
+            </v-card-text>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="add_dialog = false">Close</v-btn>
+                <v-btn color="blue darken-1" text @click="test">Save</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
 </template>
 
 <script>
-import {v4 as uuidv4} from 'uuid';
-export default {
-    name: "AddOpportunity",
-    data(){
-        return{
-            title:'',
-            date:''
-        }
-    },
-    methods:{
-        addOpportunity(e){
-            e.preventDefault();
-            const newOpportunity = this.title;
-            this.title='';
-            this.$emit('add-opportunity', newOpportunity);
+    export default {
+        name: "AddOpportunity",
+        data(){
+            return{
+                add_dialog : false,
+            }
         }
     }
-}
 </script>
 
 <style scoped>
-form {
-    text-align: center;
-}
 
-input[type="text"]{
-    padding: 5px;
-    width: 150px;
-    height: 5px;
-
-}
-input[type="submit"]{
-    text-align: center;
-
-}
 </style>

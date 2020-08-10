@@ -1,125 +1,318 @@
 <template>
-    <div>
-        <h3>Volunteers</h3>
-        <TestComponent />
-        <AddVolunteerInfo v-on:add-volunteer-info="addVolunteerInfo" />
-        <br>
-        <input type="text" v-model="search" placeholder="Search First Name.."/>
-        <editVolunteerInfo /> <!-- -->
-        <ul>
-            <li class="l1" v-for="item in filteredList1">
-                {{ item.FirstName }}, {{ item.Availibility }}, {{item.Phone}}, {{item.Email}}
-                <button v-on:click="deleteVolunteer(item.FirstName)" >Delete Volunteer</button>
-                <button v-on:click="editVolunteer(item)">Edit contact</button>    
-            </li>  
-        </ul>
-        
-        <router-link to='/home'>Homepage</router-link>
-    </div>
+    <v-main>
+        <v-row class="my-0 py-1">
+            <v-col cols="3"></v-col>
+            <v-col cols="6" align="left">
+                <v-chip :input-value="filters.approved" @click="filters.approved = !filters.approved;" filter color="green">Approved</v-chip>
+                <v-chip :input-value="filters.pending" @click="filters.pending = !filters.pending;" filter color="blue">Pending Approval</v-chip>
+                <v-chip :input-value="filters.disapproved" @click="filters.disapproved = !filters.disapproved;" filter >Disapproved</v-chip>
+                <v-chip :input-value="filters.inactive" @click="filters.inactive = !filters.inactive;" filter color="grey">Inactive</v-chip>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="3"></v-col>
+            <v-col cols="2">
+                <v-text-field placeholder="Search" v-model="search" append-icon="mdi-magnify"></v-text-field>
+            </v-col>
+            <v-col cols="2">
+                <AddVolunteer v-on:saveNewVolunteer="saveNewVolunteer"/>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="3"></v-col>
+            <v-col cols="4">
+                <v-list-item-group v-if="filteredList.length > 0" color="primary" light>
+                    <v-list-item v-for="item in filteredList" :key="item">
+                        <ViewVolunteer :item="item"/> {{item.name.First}} {{item.name.Last}}
+                        <v-list-item-content>
+                            <v-list-group>
+                                <v-list-item  v-for="center in item.centers" :key="center">
+                                    {{center}}
+                                </v-list-item>
+                            </v-list-group>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list-item-group>
+                <div v-if="filteredList.length == 0"> No Volunteers Match the Given Criteria</div>
+            </v-col>
+        </v-row>
+    </v-main>
 </template>
+
 <script>
-import AddVolunteerInfo from './AddVolunteerInfo';
-import EditVolunteerInfo from './editVolunteerInfo';
-/*var app = new Vue({
-    el:'#editVolunteer',
-    data: {
-        editinfo: '<p>edit was clicked</p>'
-    }
-})*/
-//import { Promise } from 'q';
-  class Volunteer {
-    constructor(FirstName, LastName, Username, Password, PreferredLocation, Skills, Availibility, Address, Phone, Email, Education, Licenses, ECName, ECPhone, ECEmail, ECAddress, DriversLicense, SocialSecurity, ApprovalStatus) {
-        this.FirstName = FirstName;
-        this.LastName = LastName;
-        this.Username = Username;
-        this.Password = Password;
-        this.PreferredLocation = PreferredLocation;
-        this.Skills = Skills;
-        this.Availibility = Availibility;
-        this.Address = Address;
-        this.Phone = Phone;
-        this.Email = Email;
-        this.Education = Education;
-        this.Licenses = Licenses;
-        this.ECName = ECName;
-        this.ECPhone = ECPhone;
-        this.ECEmail = ECEmail;
-        this.ECAddress = ECAddress;
-        this.DriversLicense = DriversLicense;
-        this.SocialSecurity = SocialSecurity;
-        this.ApprovalStatus = ApprovalStatus;
-    }
-  }
-  export default {
-    name: "Home",
-    components: {
-      AddVolunteerInfo,
-      EditVolunteerInfo,
-      'TestComponent' : {
-          template :"<div>Child Component, written inside the parent component</br>"
-      } //Cool stuff, child components can be written inside parent components 
-    },
-    data() {
-      return {
-        search: '',
-        selected: '',
-        volunteers: [
-          new Volunteer('Steph', 'Curry', 'StephCurry', 'Password', 'Main Location', 'Basketball',  'M W F', '123 Main Street', '800-000-0000', 'S.Curry@emial.com', 'HighSchool', 'forklift license', 'Ayesha Curry', '800-000-0003', 'AyeshaCurry@email.com', '', 'No', 'Yes', 'Approved'),
-          new Volunteer('LeBron', 'James', 'TheKing123', 'Password', 'Beach Location', 'Basketball', 'T Th', '456 that avenue', '800-000-0001', 'The_King@emial.com', 'HighSchool', 'bailer license', 'Savannah Brinson', '800-000-0004', 'TheQueen@email.com', '', 'Yes', 'Yes', 'Pending'),
-          new Volunteer('Markelle', 'Fultz', 'MarkFultz22', 'Password', 'Secondary Location', 'Basketball', 'M T F', '42 Wallaby Way', '800-000-0002', 'M.Fultz@emial.com', 'Some College', 'None', 'Steve Clifford', '800-000-0005', 'Coach_clifford@email.com', '', 'Yes', 'No', 'Denied'),
-        ],
-      }
-    },
-    methods:{
-        addVolunteerInfo(firstname, lastname, username, password, preferredlocation, skills, availibility, address, phone, email, education, licenses, ecname, ecphone, ecemail, ecaddress, driverslicense, socialsecurity, approvalstatus){
-            var newVolunteer = new Volunteer(firstname, lastname, username, password, preferredlocation, skills, availibility, address, phone, email, education, licenses, ecname, ecphone, ecemail, ecaddress, driverslicense, socialsecurity, approvalstatus);
-            this.volunteers = [...this.volunteers, newVolunteer];
-      },
-      deleteVolunteer(FirstName){
-          console.log("first name is "+FirstName);
-          if(confirm('Are you sure you want to delete '+FirstName+'\'s contact?')){
-            this.volunteers = this.volunteers.filter(volunteer => volunteer.FirstName !== FirstName);
-          }
-      },
-      editVolunteer(volunteer){
+    import ViewVolunteer from "@/components/ViewVolunteer";
+    import AddVolunteer from "@/components/AddVolunteer";
 
-      },
-    },
-    computed: {
-        filteredList1() {
-            return this.volunteers.filter(volunteer => {
-                return volunteer.FirstName.toLowerCase().includes(this.search.toLowerCase())
-            });
-        },
-        /*filteredList2() {
-            return this.volunteers.filter(volunteer => {
-                return volunteer.Availibility.toLowerCase().includes(this.search2.toLowerCase())
-            });
-        },
-        filteredList3() {
-            return this.volunteers.filter(volunteer => {
-                return volunteer.Phone.includes(this.search3)
-            });
-        },/*
-        filteredList4() {
-            return this.volunteers.filter(volunteer => {
-                return volunteer.Email.toLowerCase().includes(this.search.toLowerCase())
-            });
-        }*/
+    class EmergencyContact {
+        constructor(name, address, numbers, email){
+            this.name = name;
+            this.address = address;
+            this.numbers = numbers;
+            this.email = email;
+        }
     }
-}
+    class Volunteer {
+        centers = [];
+        skills = [];
+        licenses = [];
 
+        addLicense(license){
+            this.licenses.push(license);
+        }
+
+        addSkill(skill){
+            this.skills.push(skill);
+        }
+
+
+        addCenter(center){
+            this.centers.push(center);
+        }
+
+        getCenters(){
+            return this.centers;
+        }
+
+        constructor(name, lof, sof, status, centers, skills,
+                    times, address, numbers, email, education,
+                    licenses, emergency_contact) {
+            this.name = name; //
+            this.status = status;
+            this.username = 'username';
+            this.password = 'password';
+            this.license_on_file = lof;
+            this.social_on_file = sof;
+            // this.centers = centers.split(",");
+            this.skills = skills;
+            this.licenses = licenses;
+            this.times = times; //
+            this.address = address; //
+            this.numbers = numbers; //
+            this.email = email; //
+            this.education = education; //
+            this.emergency_contact = emergency_contact;
+            this.addCenter( 'Reel');
+            this.addCenter( 'Lunk');
+            this.addCenter('Staff');
+            this.addCenter('Curd');
+        }
+    }
+
+    export default {
+        name: "Volunteers",
+        components: {AddVolunteer, ViewVolunteer},
+        data() {
+            return {
+                filters: {
+                    disapproved: true,
+                    approved: true,
+                    pending: true,
+                    inactive: true
+                },
+                search: '',
+                volunteers: [
+                    new Volunteer(
+                        {First: 'Jeff', Last: 'Barren'},
+                        true,
+                        true,
+                        'approved',
+                        ['Burk', 'Martin Schults', 'New Bethel'],
+                        ['Software', 'Finance','Education' ],
+                        {
+                            Monday: '8-8',
+                            Tuesday: '8-8',
+                            Wednesday: '8-8',
+                            Thursday: '8-8',
+                            Friday: '8-8',
+                            Saturday: '8-8',
+                            Sunday: '8-8',
+
+                        },
+                        {
+                            StreetNumber: '8135',
+                            StreetName: 'Brent Hill Dr',
+                            City: 'Lakeville',
+                            State: 'Minnesota',
+                            Zip: '87396'
+                        },
+                        {
+                            Home: '783-937-2626',
+                            Cell: '839-375-3394',
+                            Work: '839-378-3785'
+                        },
+                        'bluekid@prune.com',
+                        {
+                            Name: 'UNF',
+                            Major: 'Computer Information',
+                            Type: 'Bachelor'
+                        },
+                        ['e3','platform89'],
+                        new EmergencyContact(
+                            {First: 'Jim', Last:'Beam'},
+                            {StreetNumber: '1234', StreetName: 'Luke warm lake',
+                                City:'Lake City', State: 'FL', Zip:'32209'
+                            },
+                            {Home: '838-989-8938', Work:'389-589-3399'},
+                            'durk@lively.com'
+                        )
+                    ),
+                    new Volunteer(
+                        {First: 'Larry', Last: 'Kimp'},
+                        true,
+                        true,
+                        'disapproved',
+                        ['Burk', 'Martin Schults', 'New Bethel'],
+                        ['Software', 'Finance','Education' ],
+                        {
+                            Monday: '8-8',
+                            Tuesday: '8-8',
+                            Wednesday: '8-8',
+                            Thursday: '8-8',
+                            Friday: '8-8',
+                            Saturday: '8-8',
+                            Sunday: '8-8',
+
+                        },
+                        {
+                            StreetNumber: '8135',
+                            StreetName: 'Brent Hill Dr',
+                            City: 'Lakeville',
+                            State: 'Minnesota',
+                            Zip: '87396'
+                        },
+                        {
+                            Home: '783-937-2626',
+                            Cell: '839-375-3394',
+                            Work: '839-378-3785'
+                        },
+                        'bluekid@prune.com',
+                        {
+                            Name: 'UNF',
+                            Major: 'Computer Information',
+                            Type: 'Bachelor'
+                        },
+                        ['e3','platform89'],
+                        new EmergencyContact(
+                            {First: 'Jim', Last:'Beam'},
+                            {StreetNumber: '1234', StreetName: 'Luke warm lake',
+                                City:'Lake City', State: 'FL', Zip:'32209'
+                            },
+                            {Home: '838-989-8938', Work:'389-589-3399'},
+                            'durk@lively.com'
+                        )
+                    ),
+                    new Volunteer(
+                        {First: 'Larry', Last: 'Kimp'},
+                        true,
+                        true,
+                        'disapproved',
+                        ['Burk', 'Martin Schults', 'New Bethel'],
+                        ['Software', 'Finance','Education' ],
+                        {
+                            Monday: '8-8',
+                            Tuesday: '8-8',
+                            Wednesday: '8-8',
+                            Thursday: '8-8',
+                            Friday: '8-8',
+                            Saturday: '8-8',
+                            Sunday: '8-8',
+
+                        },
+                        {
+                            StreetNumber: '8135',
+                            StreetName: 'Brent Hill Dr',
+                            City: 'Lakeville',
+                            State: 'Minnesota',
+                            Zip: '87396'
+                        },
+                        {
+                            Home: '783-937-2626',
+                            Cell: '839-375-3394',
+                            Work: '839-378-3785'
+                        },
+                        'bluekid@prune.com',
+                        {
+                            Name: 'UNF',
+                            Major: 'Computer Information',
+                            Type: 'Bachelor'
+                        },
+                        ['e3','platform89'],
+                        new EmergencyContact(
+                            {First: 'Jim', Last:'Beam'},
+                            {StreetNumber: '1234', StreetName: 'Luke warm lake',
+                                City:'Lake City', State: 'FL', Zip:'32209'
+                            },
+                            {Home: '838-989-8938', Work:'389-589-3399'},
+                            'durk@lively.com'
+                        )
+                    ),
+                    new Volunteer(
+                        {First: 'Jake', Last: 'Rite'},
+                        true,
+                        true,
+                        'pending',
+                        ['Burk', 'Martin Schults', 'New Bethel'],
+                        ['Software', 'Finance','Education' ],
+                        {
+                            Monday: '8-8',
+                            Tuesday: '8-8',
+                            Wednesday: '8-8',
+                            Thursday: '8-8',
+                            Friday: '8-8',
+                            Saturday: '8-8',
+                            Sunday: '8-8',
+
+                        },
+                        {
+                            StreetNumber: '8135',
+                            StreetName: 'Brent Hill Dr',
+                            City: 'Lakeville',
+                            State: 'Minnesota',
+                            Zip: '87396'
+                        },
+                        {
+                            Home: '783-937-2626',
+                            Cell: '839-375-3394',
+                            Work: '839-378-3785'
+                        },
+                        'bluekid@prune.com',
+                        {
+                            Name: 'UNF',
+                            Major: 'Computer Information',
+                            Type: 'Bachelor'
+                        },
+                        ['e3','platform89'],
+                        new EmergencyContact(
+                            {First: 'Jim', Last:'Beam'},
+                            {StreetNumber: '1234', StreetName: 'Luke warm lake',
+                                City:'Lake City', State: 'FL', Zip:'32209'
+                            },
+                            {Home: '838-989-8938', Work:'389-589-3399'},
+                            'durk@lively.com'
+                        )
+                    ),
+                ],
+            }
+        },
+        methods:{
+            saveNewVolunteer(person) {
+                this.volunteers.push(new Volunteer(
+                    person.name, person.license_on_file, person.social_on_file, person.status, person.centers,
+                    person.skills.split(","), person.times, person.address, person.numbers, person.email,
+                    person.education, person.licenses.split(","),
+                    new EmergencyContact(person.emergency_contact.name, person.emergency_contact.address,
+                        person.emergency_contact.numbers, person.emergency_contact.email)
+                ));
+            },
+        },
+        computed: {
+            filteredList() {
+                return this.volunteers.filter(volunteer => {
+                    if(this.filters[volunteer.status]){
+                        return volunteer.name.First.toLowerCase().includes(this.search.toLowerCase())
+                    }
+                })
+            },
+        }
+    }
 </script>
-<style scoped>
-
-
-/*spare code parts 
-<li class="l2" v-for="item in filteredList2">{{ item.availibility }}</li>
-<li class="l3" v-for="item in filteredList3">{{ item.phone }}</li>
-<li class="l4" v-for="item in filteredList4">{{ item.email }}</li>
-
-<div id="editVolunteer">
-            <p v-html="editinfo"></p>
-        </div>
-        */
-</style>

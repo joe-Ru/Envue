@@ -1,47 +1,50 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view @authenticated="setAuthenticated" />
-    <div id="nav">
-      <router-link v-if="authenticated" to="/login" v-on:click.native="logout()" replace>Logout</router-link>
-    </div>
+    <v-app>
+      <v-content>
+        <router-view @authenticated="setAuthenticated" />
+        <Footer/>
+      </v-content>
+    </v-app>
   </div>
 </template>
 
 <script>
+  import Footer from '@/components/Footer'
   export default {
-      name: 'App',
-      data() {
-        return {
-          authenticated: false,
-          mockAccount: {
-            username: "somename",
-            password: "password"
-          }
+    name: 'App',
+    data() {
+      return {
+        authenticated: false,
+        mockAccount: {
+          username: "somename",
+          password: "password"
         }
+      }
+    },
+    mounted() {
+      if(!this.authenticated) {
+        this.$router.replace({ name: "Login" });
+      }
+    },
+    methods: {
+      setAuthenticated(status) {
+        this.authenticated = status;
       },
-      mounted() {
-        if(!this.authenticated) {
-          this.$router.replace({ name: "Login" });
-        }
-      },
-      methods: {
-        setAuthenticated(status) {
-          this.authenticated = status;
-        },
-        logout() {
-          this.authenticated = false;
-        }
-      },
-      components: {
-        // Navigation: Navigation
-      },
+      logout() {
+        this.authenticated = false;
+      }
+    },
+    components: {
+      Footer: Footer
+      // Navigation: Navigation
+    },
   }
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
