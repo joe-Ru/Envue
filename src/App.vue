@@ -2,8 +2,8 @@
   <div id="app">
     <v-app>
       <v-content>
-        <router-view @authenticated="setAuthenticated" />
-        <Footer/>
+        <router-view @authenticated="setAuthenticated"/>
+        <Footer :authenticated="authenticated"/>
       </v-content>
     </v-app>
   </div>

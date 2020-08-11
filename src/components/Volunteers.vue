@@ -1,7 +1,7 @@
 <template>
     <v-main>
         <v-row class="my-0 py-1">
-            <v-col cols="3"></v-col>
+            <v-col cols="4"></v-col>
             <v-col cols="6" align="left">
                 <v-chip :input-value="filters.approved" @click="filters.approved = !filters.approved;" filter color="green">Approved</v-chip>
                 <v-chip :input-value="filters.pending" @click="filters.pending = !filters.pending;" filter color="blue">Pending Approval</v-chip>
@@ -10,7 +10,7 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col cols="3"></v-col>
+            <v-col cols="4"></v-col>
             <v-col cols="2">
                 <v-text-field placeholder="Search" v-model="search" append-icon="mdi-magnify"></v-text-field>
             </v-col>
@@ -19,11 +19,11 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col cols="3"></v-col>
+            <v-col cols="4"></v-col>
             <v-col cols="4">
                 <v-list-item-group v-if="filteredList.length > 0" color="primary" light>
                     <v-list-item v-for="item in filteredList" :key="item">
-                        <ViewVolunteer :item="item"/> {{item.name.First}} {{item.name.Last}}
+                        <ViewVolunteer :item="item" :list="volunteers"/> {{item.name.First}} {{item.name.Last}}
                         <v-list-item-content>
                             <v-list-group>
                                 <v-list-item  v-for="center in item.centers" :key="center">
@@ -104,10 +104,10 @@
         data() {
             return {
                 filters: {
-                    disapproved: true,
+                    disapproved: false,
                     approved: true,
                     pending: true,
-                    inactive: true
+                    inactive: false
                 },
                 search: '',
                 volunteers: [
@@ -161,7 +161,7 @@
                         true,
                         true,
                         'disapproved',
-                        ['Burk1', 'Martin Schults', 'New Bethel'],
+                        ['Burk', 'Martin Schults', 'New Bethel'],
                         ['Software', 'Finance','Education' ],
                         {
                             Monday: '8-8',

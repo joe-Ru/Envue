@@ -4,7 +4,7 @@
             <v-col cols="12"><h1>Administrative Page</h1></v-col>
         </v-row>
         <v-row class="ma-0 pa-0">
-            <v-col cols="3"></v-col>
+            <v-col cols="4"></v-col>
             <v-col cols="6">
                 <v-radio-group v-model="selected" row>
                     <v-radio label="Manage Volunteers" name="selection" value="Volunteers"></v-radio>

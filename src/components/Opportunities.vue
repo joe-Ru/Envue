@@ -1,7 +1,7 @@
 <template>
     <v-main>
         <v-row>
-            <v-col cols="3"></v-col>
+            <v-col cols="4"></v-col>
             <v-data-table :search="search" :headers="headers" :items="opportunities" :items-per-page="53"
             class="elevation-1">
                 <template v-slot:item="row">
