@@ -112,7 +112,7 @@
                 search: '',
                 volunteers: [
                     new Volunteer(
-                        {First: 'Jeff', Last: 'Barren'},
+                        {First: 'Jef', Last: 'Barren'},
                         true,
                         true,
                         'approved',
