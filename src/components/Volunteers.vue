@@ -161,7 +161,7 @@
                         true,
                         true,
                         'disapproved',
-                        ['Test', 'Martin Schults', 'New Bethel'],
+                        ['Burk1', 'Martin Schults', 'New Bethel'],
                         ['Software', 'Finance','Education' ],
                         {
                             Monday: '8-8',
