@@ -13,7 +13,10 @@
                 <v-card-title class="headline">
                     Edit {{parentData.name.First}} {{parentData.name.Last}}
                 </v-card-title>
-                <v-form>
+                <v-form
+                        ref="form"
+                        v-model="valid"
+                >
                     <v-expansion-panels :hover=true :multiple=true :flat=true>
                         <v-expansion-panel>
                             <v-expansion-panel-header>
@@ -25,12 +28,14 @@
                                         <v-text-field
                                                 placeholder="First Name"
                                                 v-model="first_name"
+                                                :rules="required"
                                         />
                                     </v-col>
                                     <v-col>
                                         <v-text-field
                                                 placeholder="Last Name"
                                                 v-model="last_name"
+                                                :rules="required"
                                         />
                                     </v-col>
                                 </v-row>
@@ -39,12 +44,14 @@
                                         <v-text-field
                                                 placeholder="Street Number"
                                                 v-model="street_number"
+                                                :rules="required"
                                         />
                                     </v-col>
                                     <v-col cols="8" >
                                         <v-text-field
                                                 placeholder="Street Name"
                                                 v-model="street_name"
+                                                :rules="required"
                                         />
                                     </v-col>
                                 </v-row>
@@ -53,13 +60,19 @@
                                         <v-text-field
                                                 placeholder="City"
                                                 v-model="city"
+                                                :rules="required"
                                         />
                                     </v-col>
                                     <v-col cols="5">
-                                        <v-text-field
-                                                placeholder="State"
+                                        <v-select
                                                 v-model="state"
-                                        />
+                                                :items="states"
+                                        ></v-select>
+<!--                                        <v-text-field-->
+<!--                                                placeholder="State"-->
+<!--                                                v-model="state"-->
+<!--                                                :rules="required"-->
+<!--                                        />-->
                                     </v-col>
                                 </v-row>
                                 <v-row>
@@ -67,6 +80,7 @@
                                         <v-text-field
                                                 placeholder="Zip"
                                                 v-model="zip"
+                                                :rules="validateZip"
                                         />
                                     </v-col>
                                 </v-row>
@@ -75,18 +89,21 @@
                                         <v-text-field
                                                 placeholder="Home Number"
                                                 v-model="home_number"
+                                                :rules="validatePhoneNumber"
                                         />
                                     </v-col>
                                     <v-col>
                                         <v-text-field
                                                 placeholder="Cell Number"
                                                 v-model="cell_number"
+                                                :rules="validatePhoneNumber"
                                         />
                                     </v-col>
                                     <v-col>
                                         <v-text-field
                                                 placeholder="Work Number"
                                                 v-model="work_number"
+                                                :rules="validateOptionalPhoneNumber"
                                         />
                                     </v-col>
                                 </v-row>
@@ -95,6 +112,7 @@
                                         <v-text-field
                                                 placeholder="Email"
                                                 v-model="email"
+                                                :rules="validateEmail"
                                         />
                                     </v-col>
                                 </v-row>
@@ -156,10 +174,10 @@
                                         />
                                     </v-col>
                                     <v-col cols="5">
-                                        <v-text-field
-                                                placeholder="State"
+                                        <v-select
+                                                :items="states"
                                                 v-model="ec_state"
-                                        />
+                                        ></v-select>
                                     </v-col>
                                 </v-row>
                                 <v-row>
@@ -167,6 +185,7 @@
                                         <v-text-field
                                                 placeholder="Zip"
                                                 v-model="ec_zip"
+                                                :rules="validateECZip"
                                         />
                                     </v-col>
                                 </v-row>
@@ -175,12 +194,14 @@
                                         <v-text-field
                                                 placeholder="Home Number"
                                                 v-model="ec_home_phone"
+                                                :rules="validateOptionalPhoneNumber"
                                         />
                                     </v-col>
                                     <v-col>
                                         <v-text-field
                                                 placeholder="Work Number"
                                                 v-model="ec_work_phone"
+                                                :rules="validateOptionalPhoneNumber"
                                         />
                                     </v-col>
                                 </v-row>
@@ -189,6 +210,7 @@
                                         <v-text-field
                                                 placeholder="Email"
                                                 v-model="ec_email"
+                                                :rules="validateOptionalEmail"
                                         />
                                     </v-col>
                                 </v-row>
@@ -311,7 +333,7 @@
                 <v-btn color="primary" text @click="closeDialog">
                     Cancel
                 </v-btn>
-                <v-btn color="primary" text @click="saveEditsVolunteers">
+                <v-btn :disabled="!valid" color="primary" text @click="saveEditsVolunteers">
                     Save
                 </v-btn>
             </v-card-actions>
@@ -367,7 +389,8 @@
             }
         },
         props:{
-            parentData: Object
+            parentData: Object,
+            states: Array
         },
         data(){
             return {
@@ -406,7 +429,34 @@
                 saturday: this.parentData.times.Saturday,
                 sunday: this.parentData.times.Sunday,
                 skills: this.parentData.skills.join(),
-                licenses: this.parentData.licenses.join()
+                licenses: this.parentData.licenses.join(),
+                valid: true,
+                required: [
+                    v => !!v || 'This field is required'
+                ],
+                validateZip: [
+                    v => !!v || 'This field is required',
+                    v => /^[0-9]{5}(?:-[0-9]{4})?/.test(v) || 'Please enter a valid zip code'
+                ],
+                validateECZip: [
+                    v => /^([0-9]{5}(?:-[0-9]{4})?)?/.test(v) || 'Please enter a valid zip code'
+                ],
+                validatePhoneNumber: [
+                    v => !!v || 'This field is required',
+                    v => /^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$/.test(v) || 'Please enter a valid phone number'
+                ],
+                validateOptionalPhoneNumber: [
+                    v => /^(\D?(\d{3})\D?\D?(\d{3})\D?(\d{4}))?$/.test(v) || 'Please enter a valid phone number'
+                ],
+                validateEmail: [
+                    v => !!v || 'This field is required',
+                    v => /^[0-9?A-z0-9?]+(\.)?[0-9?A-z0-9?]+@[A-z]+\.[A-z]{3}.?[A-z]{0,3}$/.test(v) ||
+                        'Please enter a valid email address'
+                ],
+                validateOptionalEmail: [
+                    v => /^([0-9?A-z0-9?]+(\.)?[0-9?A-z0-9?]+@[A-z]+\.[A-z]{3}.?[A-z]{0,3})?$/.test(v) ||
+                        'Please enter a valid email address'
+                ]
             }
         }
     }

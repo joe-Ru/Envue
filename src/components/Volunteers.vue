@@ -15,7 +15,7 @@
                 <v-text-field placeholder="Search" v-model="search" append-icon="mdi-magnify"></v-text-field>
             </v-col>
             <v-col cols="2">
-                <AddVolunteer v-on:saveNewVolunteer="saveNewVolunteer"/>
+                <AddVolunteer v-on:saveNewVolunteer="saveNewVolunteer" :states="states"/>
             </v-col>
         </v-row>
         <v-row>
@@ -23,7 +23,7 @@
             <v-col cols="4">
                 <v-list-item-group v-if="filteredList.length > 0" color="primary" light>
                     <v-list-item v-for="item in filteredList" :key="item">
-                        <ViewVolunteer :item="item" :list="volunteers"/> {{item.name.First}} {{item.name.Last}}
+                        <ViewVolunteer :item="item" :list="volunteers" :states="states"/> {{item.name.First}} {{item.name.Last}}
                         <v-list-item-content>
                             <v-list-group>
                                 <v-list-item  v-for="center in item.centers" :key="center">
@@ -110,9 +110,21 @@
                     inactive: false
                 },
                 search: '',
+                states: ['Alabama','Alaska','American Samoa','Arizona','Arkansas',
+                    'California','Colorado','Connecticut','Delaware','District of Columbia','' +
+                    'Federated States of Micronesia','Florida','Georgia','Guam','Hawaii',
+                    'Idaho','Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana',
+                    'Maine','Marshall Islands','Maryland','Massachusetts','Michigan',
+                    'Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada',
+                    'New Hampshire','New Jersey','New Mexico','New York','North Carolina',
+                    'North Dakota','Northern Mariana Islands','Ohio','Oklahoma','Oregon',
+                    'Palau','Pennsylvania','Puerto Rico','Rhode Island','South Carolina',
+                    'South Dakota','Tennessee','Texas','Utah','Vermont','Virgin Island',
+                    'Virginia','Washington','West Virginia','Wisconsin','Wyoming'
+                ],
                 volunteers: [
                     new Volunteer(
-                        {First: 'Jef', Last: 'Barren'},
+                        {First: 'Jeff', Last: 'Barren'},
                         true,
                         true,
                         'approved',
