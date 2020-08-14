@@ -9,7 +9,7 @@
                         <td>{{row.item.name}}</td>
                         <td>{{row.item.date}}</td>
                         <td>
-                            <EditOpportunity :parentData="row.item"/>
+                            <EditOpportunity :states="states" :parentData="row.item"/>
                             <v-btn class="mx-2" icon="true" color="primary" @click="edit_dialog=false">
                                 <v-icon>mdi-delete</v-icon>
                             </v-btn>

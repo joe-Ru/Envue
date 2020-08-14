@@ -16,7 +16,7 @@
                     name="add-opp-name" 
                     placeholder="Center Name" 
                     :value="parentData.name" 
-                    v-model:="opp_name"></v-text-field>
+                    v-model="opp_name"></v-text-field>
                     <v-date-picker name="center-date"></v-date-picker>
                 </v-form>
             </v-card-text>
@@ -32,23 +32,24 @@
 <script>
     export default {
         name: "EditOpportunity",
+        methods: {
+            closeDialog(){
+                this.edit_dialog = false;
+            },
+            saveNewOpportunity(){
+                this.parentData.name = this.opp_name;
+                this.closeDialog();
+            }
+        },
         props:{
             parentData: Object,
             edit: Boolean,
         },
         data(){
             return{
-                edit_dialog : false
-            }
-        },
-        methods: {
-            saveNewOpportunity(){
-                this.parentData.name = this.opp_name;
-                this.closeDialog();
-            },
-            closeDialog(){
-                this.edit_dialog = false;
-            }
+                edit_dialog : false,
+                opp_name: this.parentData.name
+            } 
         }
     }
 </script>
