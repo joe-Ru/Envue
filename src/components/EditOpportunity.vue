@@ -17,7 +17,7 @@
                     placeholder="Center Name" 
                     :value="parentData.name" 
                     v-model="opp_name"></v-text-field>
-                    <v-date-picker name="center-date"></v-date-picker>
+                    <v-date-picker name="center-date" v-model="opp_date"></v-date-picker>
                 </v-form>
             </v-card-text>
             <v-card-actions>
@@ -38,6 +38,7 @@
             },
             saveNewOpportunity(){
                 this.parentData.name = this.opp_name;
+                this.parentData.date = this.opp_date;
                 this.closeDialog();
             }
         },
@@ -48,7 +49,7 @@
         data(){
             return{
                 edit_dialog : false,
-                opp_name: this.parentData.name
+                opp_name: this.parentData.name,
             } 
         }
     }
