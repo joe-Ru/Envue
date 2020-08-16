@@ -71,12 +71,12 @@
                 search: '',
                 selected: 'Opportunities',
                 opportunities: [
-                    new Opportunity('This One', "7/20/20"),
-                    new Opportunity('That One', "4/14/20"),
-                    new Opportunity('That One', "7/20/13"),
-                    new Opportunity('That One', "1/20/02"),
-                    new Opportunity('That One', "7/12/10"),
-                    new Opportunity('The Other', "6/31/04")
+                    new Opportunity('This One', "2020-07-20"),
+                    new Opportunity('That One', "2020-04-14"),
+                    new Opportunity('That One', "2013-07-20"),
+                    new Opportunity('That One', "2002-01-20"),
+                    new Opportunity('That One', "2010-07-12"),
+                    new Opportunity('The Other', "2004-06-31")
                 ]
             }
         },
